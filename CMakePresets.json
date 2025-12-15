@@ -1,0 +1,18 @@
+{
+  "version": 8,
+  "configurePresets": [
+    {
+      "name": "CMakeTest",
+      "generator": "MinGW Makefiles",
+      "displayName": "GCC 15.2.0 x86_64-w64-mingw32",
+      "description": "正在使用编译器: C = D:\\work\\Cpp\\w64devkit\\bin\\gcc.exe, CXX = D:\\work\\Cpp\\w64devkit\\bin\\g++.exe",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+        "CMAKE_C_COMPILER": "D:/work/Cpp/w64devkit/bin/gcc.exe",
+        "CMAKE_CXX_COMPILER": "D:/work/Cpp/w64devkit/bin/g++.exe",
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    }
+  ]
+}
