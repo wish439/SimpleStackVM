@@ -50,11 +50,9 @@ void* getFromStorageStack(const StorageStack* stack, const int tag)
     return NULL;
   }
 
-  const void* element = stack->data[tag];
-  //copy element
+  void* element = stack->data[tag];
   void* clone = malloc(sizeof(element));
   memcpy(clone, element, sizeof(element));
-  //return clone
   return clone;
 }
 

@@ -4,5 +4,9 @@ project(CMakeTest VERSION 0.1.0 LANGUAGES C)
 add_executable(CMakeTest main.c OperationStackImpl.c MiniStackVM.h StorageStackImpl.c
         MiniStackVMImpl.c
         OpCode.c
+        String.c
+        String.h
+        StringReader.c
+        StringReader.h
 )
 
