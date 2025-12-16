@@ -1,35 +1,46 @@
+#include <stdio.h>
+
 #include "StorageStack.h"
 
-StorageStack* createStorageStack(size_t elementSize) 
+StorageStack* createStorageStack(const size_t maxSize)
 {
-  StorageStack *stack = (StorageStack *)malloc(sizeof(StorageStack));
-  if (!stack) {
-      return NULL;
+  StorageStack* stack = malloc(sizeof(StorageStack));
+  if (!stack)
+  {
+    return NULL;
   }
-  stack->data = NULL; // Initialize data to NULL or appropriate structure
-  stack->elementSize = elementSize;
+  stack->data = malloc(maxSize * sizeof(void*));
+  //init to 0;
+  stack->maxSize = maxSize;
+  stack->currentSize = 0;
   return stack;
 }
 
-void pushToStorageStack(StorageStack *stack, const void *element, int tag) 
+void pushToStorageStack(StorageStack* stack, void* element, const int tag)
 {
   if (stack->data == NULL)
   {
-    stack->data = malloc(sizeof(void*));
+    printf("stack is empty");
+    return;
+  }
+
+  if (isStorageStackFull(stack))
+  {
+    printf("StorageStack is full");
+    return;
   }
 
   //push
 
-  stack->data = realloc(stack->data, stack->elementSize * sizeof(void*));
-  ((void**)stack->data)[stack->elementSize - 1] = malloc(stack->elementSize * sizeof(void*));
-  stack->elementSize += 1;
+  stack->data[tag] = element;
+  stack->currentSize++;
 }
 
-void* popFromStorageStack(StorageStack *stack, int tag) 
+void* getFromStorageStack(const StorageStack* stack, const int tag)
 {
-
   if (stack->data == NULL)
   {
+    printf("data is empty pop failed.");
     return NULL;
   }
 
@@ -38,23 +49,29 @@ void* popFromStorageStack(StorageStack *stack, int tag)
     return NULL;
   }
 
-  stack->data = realloc(stack->data, (stack->elementSize - 1) * sizeof(void*));
-  void *element = ((void**)stack->data)[stack->elementSize - 1];
-  stack->elementSize -= 1;
+  void* element = stack->data[tag];
   return element;
 }
 
-void freeStorageStack(StorageStack *stack)
+void freeStorageStack(StorageStack* stack)
 {
-  if (stack) 
+  if (!stack) return;
+  for (int i = 0; i < stack->currentSize; i++)
   {
-      free(stack->data);
-      free(stack);
-      stack = NULL;
+    free(stack->data[i]);
   }
+  free(stack->data);
+  stack->currentSize = 0;
+  free(stack);
+  stack = NULL;
 }
 
-int isStorageStackEmpty(StorageStack *stack) 
+int isStorageStackEmpty(const StorageStack* stack)
 {
-  return stack->elementSize <= 0;
+  return stack->currentSize <= 0;
+}
+
+int isStorageStackFull(const StorageStack *stack)
+{
+  return stack->currentSize >= stack->maxSize;
 }

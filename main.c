@@ -2,17 +2,20 @@
 #include <stdlib.h>
 #include <windows.h>
 #include "MiniStackVM.h"
+#include "OpCodes.h"
 
 DWORD WINAPI MyThreadFunction(LPVOID lpParam) {
-    MiniStackVM *vm = createMiniStackVM(sizeof(int));
+    MiniStackVM *vm = createMiniStackVM(5);
     if (!vm) {
         printf("Failed to create MiniStackVM\n");
         return 1;
     }
-    executebyteCode(vm, ICONST_2);
-    executebyteCode(vm, ICONST_3);
-    executebyteCode(vm, IADD);
-    executebyteCode(vm, PRINT);
+    executeByteCode(vm, ICONST_2);
+    executeByteCode(vm, ISTORE);
+    executeByteCode(vm, ICONST_3);
+    executeByteCode(vm, ILOAD);
+    executeByteCode(vm, IADD);
+    executeByteCode(vm, PRINT);
     freeMiniStackVM(vm);
     return 0;
 }
