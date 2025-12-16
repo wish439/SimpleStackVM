@@ -6,8 +6,6 @@
 #define CMAKETEST_STRING_H
 #include <stdlib.h>
 
-#include "StringReader.h"
-
 typedef struct string
 {
   char *value;

@@ -2,12 +2,13 @@
 // Created by Administrator on 2025/12/16.
 //
 
+
 #include "MiniStackVM.h"
 #include "OpCodes.h"
 
-MiniStackVM *createMiniStackVM(const size_t elementSize)
+MiniStackVM* createMiniStackVM(const size_t elementSize)
 {
-  MiniStackVM *vm = malloc(sizeof(MiniStackVM));
+  MiniStackVM* vm = malloc(sizeof(MiniStackVM));
   if (!vm)
   {
     return NULL;
@@ -24,7 +25,7 @@ MiniStackVM *createMiniStackVM(const size_t elementSize)
   return vm;
 }
 
-void freeMiniStackVM(MiniStackVM *vm)
+void freeMiniStackVM(MiniStackVM* vm)
 {
   if (vm)
   {
@@ -35,7 +36,7 @@ void freeMiniStackVM(MiniStackVM *vm)
   }
 }
 
-void executeByteCode(MiniStackVM *vm, const unsigned int OpCodeTag)
+void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, void* args[])
 {
   if (!vm)
   {
@@ -86,11 +87,35 @@ void executeByteCode(MiniStackVM *vm, const unsigned int OpCodeTag)
     printf("PRINT: %d\n", *topValue);
     break;
   case 0x06: //ISTORE
+    if (args[0] == NULL)
+    {
+      printf("arg Error!!!");
+      break;
+    }
+    const char* str = args[0];
+    const int tag = parseInt(str);
+    if (tag == -1)
+    {
+      printf("arg Error!!!");
+      break;
+    }
     int* popV = popOperation(vm->opStack);
-    pushToStorageStack(vm->stack, popV, 0);
+    pushToStorageStack(vm->stack, popV, tag);
     break;
   case 0x07: //ILOAD
-    int* pushV = getFromStorageStack(vm->stack, 0);
+    if (args[0] == NULL)
+    {
+      printf("arg Error!!!");
+      break;
+    }
+    const char* str1 = args[0];
+    const int tag1 = parseInt(str1);
+    if (tag1 == -1)
+    {
+      printf("arg Error!!!");
+      break;
+    }
+    int* pushV = getFromStorageStack(vm->stack, tag1);
     pushOperation(vm->opStack, pushV);
     break;
   default:
@@ -99,8 +124,23 @@ void executeByteCode(MiniStackVM *vm, const unsigned int OpCodeTag)
   }
 }
 
-void executeBC(MiniStackVM *vm, const char *str)
+int parseInt(const char * __restrict__ Str)
 {
-  if (str) return;
-  executeByteCode(vm, getInstruction(str));
+  char* endptr;
+  const int i = strtol(Str, &endptr, 10);
+  if (endptr == Str)
+  {
+    printf("Invalid integer input\n");
+    return -1;
+  }
+  if (*endptr != '\0') {
+    printf("包含额外字符\n");
+  }
+  return i;
+}
+
+void executeBC(MiniStackVM* vm, const char* str, void* args[])
+{
+  if (!str) return;
+  executeByteCode(vm, getInstruction(str), args);
 }

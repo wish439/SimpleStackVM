@@ -2,6 +2,8 @@
 // Created by Administrator on 2025/12/16.
 //
 
+#include <stdio.h>
+
 #include "OpCodes.h"
 #include <string.h>
 
@@ -24,7 +26,8 @@ struct Instruction instruction_table[] = {
   {"ICONST_1", ICONST_1},
   {"ICONST_2", ICONST_2},
   {"ICONST_3", ICONST_3},
-  {"ICONST_4", ICONST_4}
+  {"ICONST_4", ICONST_4},
+  {NULL, -1}
 };
 
 #endif

@@ -10,7 +10,7 @@
 
 typedef struct stringReader
 {
-  String* string;
+  String *string;
   int cursor;
 }StringReader;
 
