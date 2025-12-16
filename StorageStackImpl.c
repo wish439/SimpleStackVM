@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "StorageStack.h"
 
@@ -49,8 +50,12 @@ void* getFromStorageStack(const StorageStack* stack, const int tag)
     return NULL;
   }
 
-  void* element = stack->data[tag];
-  return element;
+  const void* element = stack->data[tag];
+  //copy element
+  void* clone = malloc(sizeof(element));
+  memcpy(clone, element, sizeof(element));
+  //return clone
+  return clone;
 }
 
 void freeStorageStack(StorageStack* stack)

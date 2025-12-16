@@ -15,6 +15,8 @@ DWORD WINAPI MyThreadFunction(LPVOID lpParam) {
     executeByteCode(vm, ICONST_3);
     executeByteCode(vm, ILOAD);
     executeByteCode(vm, IADD);
+    executeByteCode(vm, ILOAD);
+    executeByteCode(vm, IADD);
     executeByteCode(vm, PRINT);
     freeMiniStackVM(vm);
     return 0;

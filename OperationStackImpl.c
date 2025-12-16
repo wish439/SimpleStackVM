@@ -17,9 +17,9 @@ void pushOperation(OperationStack* stack, void* operation)
     printf("OperationStack is full, cannot push.\n");
     return;
   }
-
   stack->data[stack->currentSize] = operation;
   stack->currentSize++;
+
 }
 
 void* popOperation(OperationStack* stack)

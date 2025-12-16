@@ -14,25 +14,6 @@
 #define ICONST_3 104
 #define ICONST_4 105
 
-struct Instruction {
-  const char *name;
-  unsigned int value;
-};
 
-struct Instruction instruction_table[] = {
-  {"IPUSH", IPUSH},
-  {"IPOP", IPOP},
-  {"IADD", IADD},
-  {"ISUB", ISUB},
-  {"PRINT", PRINT},
-  {"ISTORE", ISTORE},
-  {"ILOAD", ILOAD},
-  {"ICONST_0", ICONST_0},
-  {"ICONST_1", ICONST_1},
-  {"ICONST_2", ICONST_2},
-  {"ICONST_3", ICONST_3},
-  {"ICONST_4", ICONST_4},
-  {NULL, -1}
-};
 
 unsigned int getInstruction(const char *name);
