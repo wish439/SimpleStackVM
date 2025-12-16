@@ -6,7 +6,8 @@ add_executable(CMakeTest main.c OperationStackImpl.c MiniStackVM.h StorageStackI
         OpCode.c
         String.c
         String.h
-        StringReader.c
         StringReader.h
+        ByteCodeParse.c
+        ByteCodeParse.h
+        StringReader.c
 )
-

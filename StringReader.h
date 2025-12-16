@@ -15,6 +15,9 @@ typedef struct stringReader
 }StringReader;
 
 StringReader* createStringReader(String *str);
+int shouldStop(const StringReader* reader);
+String* readToCantRead(StringReader* sr);
+void skipCantRead(StringReader *sr);
 int canRead(const StringReader* reader);
 void skip(StringReader* reader);
 char peek(const StringReader* reader);

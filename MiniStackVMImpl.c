@@ -36,7 +36,7 @@ void freeMiniStackVM(MiniStackVM* vm)
   }
 }
 
-void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, void* args[])
+void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, void** args)
 {
   if (!vm)
   {

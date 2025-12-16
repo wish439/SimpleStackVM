@@ -10,7 +10,15 @@ String* createString(char *str)
   String* string = malloc(sizeof(String));
   string->value = str;
   string->len = strlen(str);
+  string->currentCursor = (int)string->len - 1;
   return string;
+}
+
+void appendToString(String *string, const char ch)
+{
+  if (!string) return;
+  string->currentCursor++;
+  string->value[string->currentCursor] = ch;
 }
 
 void freeString(String *str)

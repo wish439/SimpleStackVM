@@ -10,8 +10,10 @@ typedef struct string
 {
   char *value;
   size_t len;
+  int currentCursor;
 }String;
 
+void appendToString(String *string,char ch);
 String* createString(char *str);
 
 void freeString(String *str);
