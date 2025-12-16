@@ -12,12 +12,36 @@ StringReader* createStringReader(String* str)
   return sr;
 }
 
+int shouldStop(const StringReader *reader)
+{
+  return peek(reader) == '\0';
+}
+
+String* readToCantRead(StringReader* sr)
+{
+  skipCantRead(sr);
+  String* string = createString("");
+  while (canRead(sr))
+  {
+    const char c = read(sr);
+    appendToString(string, c);
+  }
+  return string;
+}
+
+void skipCantRead(StringReader* sr)
+{
+  while (!canRead(sr))
+  {
+    skip(sr);
+  }
+}
+
 int canRead(const StringReader* reader)
 {
   const String* s = reader->string;
   const char ch = s->value[reader->cursor];
   if (ch == '\0') return 0;
-  if (ch == '\n') return 0;
   if (ch == '\r') return 0;
   if (ch == ' ') return 0;
   return 1;
