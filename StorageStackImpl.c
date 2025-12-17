@@ -56,17 +56,17 @@ void* getFromStorageStack(const StorageStack* stack, const int tag)
   return clone;
 }
 
-void freeStorageStack(StorageStack* stack)
+void freeStorageStack(StorageStack** stack)
 {
   if (!stack) return;
-  for (int i = 0; i < stack->currentSize; i++)
+  for (int i = 0; i < (*stack)->currentSize; i++)
   {
-    free(stack->data[i]);
+    free((*stack)->data[i]);
   }
-  free(stack->data);
-  stack->currentSize = 0;
-  free(stack);
-  stack = NULL;
+  free((*stack)->data);
+  (*stack)->currentSize = 0;
+  free(*stack);
+  *stack = NULL;
 }
 
 int isStorageStackEmpty(const StorageStack* stack)

@@ -25,15 +25,15 @@ MiniStackVM* createMiniStackVM(const size_t elementSize)
   return vm;
 }
 
-void freeMiniStackVM(MiniStackVM* vm)
+void freeMiniStackVM(MiniStackVM** vm)
 {
-  if (vm)
-  {
-    freeStorageStack(vm->stack);
-    freeOperationStack(vm->opStack);
-    free(vm);
-    vm = NULL;
-  }
+  if (!vm) return;
+  if (!*vm) return;
+
+  freeStorageStack(&(*vm)->stack);
+  freeOperationStack(&(*vm)->opStack);
+  free(*vm);
+  *vm = NULL;
 }
 
 void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, void** args)
@@ -124,7 +124,7 @@ void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, void** args)
   }
 }
 
-int parseInt(const char * __restrict__ Str)
+int parseInt(const char* __restrict__ Str)
 {
   char* endptr;
   const int i = strtol(Str, &endptr, 10);
@@ -133,7 +133,8 @@ int parseInt(const char * __restrict__ Str)
     printf("Invalid integer input\n");
     return -1;
   }
-  if (*endptr != '\0') {
+  if (*endptr != '\0')
+  {
     printf("包含额外字符\n");
   }
   return i;

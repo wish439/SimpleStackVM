@@ -16,6 +16,6 @@ typedef struct string
 void appendToString(String *string,char ch);
 String* createString(char *str);
 
-void freeString(String *str);
+void freeString(String **str);
 
 #endif //CMAKETEST_STRING_H

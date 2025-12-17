@@ -15,7 +15,7 @@ typedef struct
 
 MiniStackVM *createMiniStackVM(size_t elementSize);
 
-void freeMiniStackVM(MiniStackVM *vm);
+void freeMiniStackVM(MiniStackVM **vm);
 
 void executeByteCode(MiniStackVM *vm, unsigned int OpCodeTag, void** args);
 

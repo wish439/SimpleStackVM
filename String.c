@@ -21,10 +21,10 @@ void appendToString(String *string, const char ch)
   string->value[string->currentCursor] = ch;
 }
 
-void freeString(String *str)
+void freeString(String **str)
 {
   if (!str) return;
-  free(str->value);
-  free(str);
-  str = NULL;
+  free((*str)->value);
+  free(*str);
+  *str = NULL;
 }

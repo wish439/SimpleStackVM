@@ -22,5 +22,5 @@ int canRead(const StringReader* reader);
 void skip(StringReader* reader);
 char peek(const StringReader* reader);
 char read(StringReader* reader);
-void freeStringReader(StringReader* reader);
+void freeStringReader(StringReader** reader);
 #endif //CMAKETEST_STRINGREADER_H

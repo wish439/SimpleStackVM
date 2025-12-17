@@ -16,6 +16,6 @@ typedef struct
 
 inline ParseResult* createParseResult(unsigned int operation, void** args);
 ParseResult* parse(String *str);
-void freeParseResult(ParseResult* res);
+void freeParseResult(ParseResult** res);
 
 #endif //CMAKETEST_BYTECODEPASER_H

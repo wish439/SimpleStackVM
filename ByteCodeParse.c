@@ -19,7 +19,7 @@ ParseResult* parse(String *str)
 {
   StringReader *sr = createStringReader(str);
   const String* command = readToCantRead(sr);
-  int op = getInstruction(command->value);
+  unsigned int op = getInstruction(command->value);
   int i = 0;
   while (!shouldStop(sr))
   {
@@ -27,14 +27,14 @@ ParseResult* parse(String *str)
   }
 }
 
-void freeParseResult(ParseResult* res)
+void freeParseResult(ParseResult** res)
 {
-  for (int i = 0;res->args[i] != NULL; i++)
+  for (int i = 0;(*res)->args[i] != NULL; i++)
   {
-    free(res->args[i]);
+    free((*res)->args[i]);
   }
-  free(res->args);
-  free(res);
-  res = NULL;
+  free((*res)->args);
+  free(*res);
+  *res = NULL;
 }
 

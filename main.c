@@ -23,7 +23,7 @@ DWORD WINAPI MyThreadFunction(LPVOID lpParam) {
     executeByteCode(vm, ICONST_1, emptyArgs);
     executeBC(vm, "IADD", emptyArgs);
     executeByteCode(vm, PRINT, emptyArgs);
-    freeMiniStackVM(vm);
+    freeMiniStackVM(&vm);
     return 0;
 }
 

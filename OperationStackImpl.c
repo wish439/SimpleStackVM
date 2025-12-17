@@ -51,14 +51,14 @@ int isOperationStackEmpty(const OperationStack* stack)
   return stack->currentSize <= 0;
 }
 
-void freeOperationStack(OperationStack* stack)
+void freeOperationStack(OperationStack** stack)
 {
-  for (size_t i = 0; i < stack->currentSize; i++)
+  for (size_t i = 0; i < (*stack)->currentSize; i++)
   {
-    free(stack->data[i]);
+    free((*stack)->data[i]);
   }
-  free(stack);
-  stack = NULL;
+  free(*stack);
+  *stack = NULL;
 }
 
 int isOperationFull(const OperationStack* stack)

@@ -15,6 +15,6 @@ void pushOperation(OperationStack* stack, void* operation);
 void* popOperation(OperationStack* stack);
 void* peekOperation(const OperationStack* stack);
 int isOperationStackEmpty(const OperationStack* stack);
-void freeOperationStack(OperationStack* stack);
+void freeOperationStack(OperationStack** stack);
 int isOperationFull(const OperationStack* stack);
 #endif // OPERATIONSTACK_H

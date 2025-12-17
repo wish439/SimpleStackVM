@@ -62,10 +62,10 @@ char read(StringReader* reader)
   return reader->string->value[reader->cursor++];
 }
 
-void freeStringReader(StringReader* reader)
+void freeStringReader(StringReader** reader)
 {
-  if (!reader) return;
-  freeString(reader->string);
-  free(reader);
-  reader = NULL;
+  if (!reader || !*reader) return;
+  freeString(&(*reader)->string);
+  free(*reader);
+  *reader = NULL;
 }
