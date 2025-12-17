@@ -3,6 +3,7 @@
 #include <windows.h>
 #include "MiniStackVM.h"
 #include "OpCodes.h"
+#include "ByteCodeParse.h"
 
 void* emptyArgs[] = {};
 
@@ -17,7 +18,8 @@ DWORD WINAPI MyThreadFunction(LPVOID lpParam) {
     executeByteCode(vm, ICONST_3, 0);
     executeByteCode(vm, ILOAD, 1, "0");
     executeByteCode(vm, IADD, 0);
-    executeByteCode(vm, ILOAD, 1, "0");
+//    executeByteCode(vm, ILOAD, 1, "0");
+    executeBC(vm, "ILOAD 0");
     executeByteCode(vm, IADD, 0);
     executeByteCode(vm, ICONST_1, 0);
     executeByteCode(vm, IADD, 0);
@@ -35,6 +37,9 @@ int main(void){
         printf("Error creating thread: %d\n", GetLastError());
         return 1;
     }
+
+    SetConsoleOutputCP(65001);
+//    const ParseResult* result = parse(createString("ISTORE 0"));
 
     Sleep(10000); // Wait for thread to finish
     

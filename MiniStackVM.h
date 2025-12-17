@@ -19,9 +19,9 @@ void freeMiniStackVM(MiniStackVM **vm);
 
 void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, const int count , ...);
 
-inline void executeByteCodeA(MiniStackVM* vm, const unsigned int OpCodeTag, char* args[]);
+void executeByteCodeA(MiniStackVM* vm, const unsigned int OpCodeTag,int count, char* args[]);
 
-void executeBC(MiniStackVM *vm, const char *str, void* args[]);
+void executeBC(MiniStackVM *vm, char *str);
 
 int parseInt(const char * __restrict__ Str);
 

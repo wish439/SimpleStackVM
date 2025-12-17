@@ -6,6 +6,10 @@
 #include "MiniStackVM.h"
 #include "OpCodes.h"
 #include <stdarg.h>
+#include <string.h>
+#include <stdlib.h>
+
+#include "ByteCodeParse.h"
 
 MiniStackVM* createMiniStackVM(const size_t elementSize)
 {
@@ -47,7 +51,7 @@ void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, const int co
     args[i] = va_arg(list, char*);
   }
   va_end(list);
-  executeByteCodeA(vm, OpCodeTag, args);
+  executeByteCodeA(vm, OpCodeTag,count ,args);
 }
 
 int parseInt(const char* __restrict__ Str)
@@ -66,7 +70,7 @@ int parseInt(const char* __restrict__ Str)
   return i;
 }
 
-inline void executeByteCodeA(MiniStackVM* vm, const unsigned int OpCodeTag, char* args[])
+void executeByteCodeA(MiniStackVM* vm, const unsigned int OpCodeTag,int count, char* args[])
 {
 
   if (!vm)
@@ -153,12 +157,27 @@ inline void executeByteCodeA(MiniStackVM* vm, const unsigned int OpCodeTag, char
     printf("Unknown opcode: %02x\n", OpCodeTag);
     return;
   }
+  for (int i = 0; i < count - 1; i++)
+  {
+    free(args[i]);
+  }
 }
 
-
-//TODO: parse the "str" to char* [] then invoke executeByteCodeA.
-/*void executeBC(MiniStackVM* vm, const char* str)
+void executeBC(MiniStackVM* vm, char* str)
 {
   if (!str) return;
-  executeByteCodeA(vm, getInstruction(str));
-}*/
+  ParseResult* result = parse(createString(str));
+  const unsigned int opcode = result->operation;
+  char* arg[result->argc];
+  for (int i = 0; i < result->argc; i++)
+  {
+    const size_t s = strlen(result->args[i]);
+    char* b = malloc(s + 1);
+    if (!b) return;
+    memcpy(b, result->args[i], s + 1);
+    arg[i] = b;
+  }
+  const int c = result->argc;
+  freeParseResult(&result);
+  executeByteCodeA(vm, opcode,c, arg);
+}

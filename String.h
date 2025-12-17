@@ -11,6 +11,7 @@ typedef struct string
   char *value;
   size_t len;
   int currentCursor;
+  int capacity;
 }String;
 
 void appendToString(String *string,char ch);

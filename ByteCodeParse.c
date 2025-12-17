@@ -6,30 +6,57 @@
 
 #include "StringReader.h"
 #include "OpCodes.h"
+#include <stdio.h>
 
-inline ParseResult* createParseResult(const unsigned int operation, void** args)
+ParseResult* createParseResult(const unsigned int operation, char** args, int argc)
 {
-  ParseResult *result = malloc(sizeof(ParseResult));
+  ParseResult* result = malloc(sizeof(ParseResult));
   result->operation = operation;
   result->args = args;
+  result->argc = argc;
   return result;
 }
 
-ParseResult* parse(String *str)
+ParseResult* parse(String* str)
 {
-  StringReader *sr = createStringReader(str);
+  StringReader* sr = createStringReader(str);
   const String* command = readToCantRead(sr);
-  unsigned int op = getInstruction(command->value);
+  const unsigned int op = getInstruction(command->value);
   int i = 0;
+  char** args = malloc(sizeof(void*));
   while (!shouldStop(sr))
   {
-
+    const String* arg = readToCantRead(sr);
+    char** temp = realloc(args, sizeof(char*) * (i + 1));
+    if (!temp)
+    {
+      ParseResult* b = createParseResult(op, args, i);
+      freeParseResult(&b);
+      freeStringReader(&sr);
+      return NULL;
+    }
+    args = temp;
+    args[i] = arg->value;
+    i++;
   }
+
+  char** temp = realloc(args, sizeof(char*) * (i + 1));
+  if (!temp)
+  {
+    ParseResult* b = createParseResult(op, args, i);
+    freeParseResult(&b);
+    freeStringReader(&sr);
+    return NULL;
+  }
+  args = temp;
+  args[i + 1] = NULL;
+
+  return createParseResult(op, args, i);
 }
 
 void freeParseResult(ParseResult** res)
 {
-  for (int i = 0;(*res)->args[i] != NULL; i++)
+  for (int i = 0; i < (*res)->argc; i++)
   {
     free((*res)->args[i]);
   }
@@ -37,4 +64,3 @@ void freeParseResult(ParseResult** res)
   free(*res);
   *res = NULL;
 }
-

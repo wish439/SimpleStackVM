@@ -11,10 +11,11 @@
 typedef struct
 {
   unsigned int operation;
-  void** args;
+  char** args;
+  int argc;
 }ParseResult;
 
-inline ParseResult* createParseResult(unsigned int operation, void** args);
+ParseResult* createParseResult(unsigned int operation, char** args, int argc);
 ParseResult* parse(String *str);
 void freeParseResult(ParseResult** res);
 
