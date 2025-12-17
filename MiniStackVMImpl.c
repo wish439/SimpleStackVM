@@ -5,6 +5,7 @@
 
 #include "MiniStackVM.h"
 #include "OpCodes.h"
+#include <stdarg.h>
 
 MiniStackVM* createMiniStackVM(const size_t elementSize)
 {
@@ -36,8 +37,38 @@ void freeMiniStackVM(MiniStackVM** vm)
   *vm = NULL;
 }
 
-void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, void** args)
+void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, const int count , ...)
 {
+  char* args[count];
+  va_list list;
+  va_start(list, count);
+  for (int i = 0; i < count; i++)
+  {
+    args[i] = va_arg(list, char*);
+  }
+  va_end(list);
+  executeByteCodeA(vm, OpCodeTag, args);
+}
+
+int parseInt(const char* __restrict__ Str)
+{
+  char* endptr;
+  const int i = strtol(Str, &endptr, 10);
+  if (endptr == Str)
+  {
+    printf("Invalid integer input\n");
+    return -1;
+  }
+  if (*endptr != '\0')
+  {
+    printf("包含额外字符\n");
+  }
+  return i;
+}
+
+inline void executeByteCodeA(MiniStackVM* vm, const unsigned int OpCodeTag, char* args[])
+{
+
   if (!vm)
   {
     return;
@@ -51,7 +82,6 @@ void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, void** args)
     pushOperation(vm->opStack, value);
     return;
   }
-
 
   switch (OpCodeTag)
   {
@@ -85,6 +115,7 @@ void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, void** args)
     //print operation stack top and pop
     const int* topValue = popOperation(vm->opStack);
     printf("PRINT: %d\n", *topValue);
+    free((void*)topValue);
     break;
   case 0x06: //ISTORE
     if (args[0] == NULL)
@@ -124,24 +155,10 @@ void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, void** args)
   }
 }
 
-int parseInt(const char* __restrict__ Str)
-{
-  char* endptr;
-  const int i = strtol(Str, &endptr, 10);
-  if (endptr == Str)
-  {
-    printf("Invalid integer input\n");
-    return -1;
-  }
-  if (*endptr != '\0')
-  {
-    printf("包含额外字符\n");
-  }
-  return i;
-}
 
-void executeBC(MiniStackVM* vm, const char* str, void* args[])
+//TODO: parse the "str" to char* [] then invoke executeByteCodeA.
+/*void executeBC(MiniStackVM* vm, const char* str)
 {
   if (!str) return;
-  executeByteCode(vm, getInstruction(str), args);
-}
+  executeByteCodeA(vm, getInstruction(str));
+}*/

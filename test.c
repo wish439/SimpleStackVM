@@ -3,9 +3,10 @@
 int main() 
 {
 
-  size_t a = sizeof(void*);
-  size_t b = sizeof(int*);
-  printf("Size of void*: %zu\n", a);
-  printf("Size of int*: %zu\n", b);
+  int b = 10;
+  int* a = &b;
+  int** c = &a;
+  printf("b:%da:%pc:%p", b, a, c);
+  scanf("a");
   return 0;
 }

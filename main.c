@@ -12,17 +12,17 @@ DWORD WINAPI MyThreadFunction(LPVOID lpParam) {
         printf("Failed to create MiniStackVM\n");
         return 1;
     }
-    executeByteCode(vm, ICONST_2, emptyArgs);
-    void* t[1] = {"0"};
-    executeByteCode(vm, ISTORE, t);
-    executeByteCode(vm, ICONST_3, emptyArgs);
-    executeByteCode(vm, ILOAD, t);
-    executeByteCode(vm, IADD, emptyArgs);
-    executeByteCode(vm, ILOAD, t);
-    executeByteCode(vm, IADD, emptyArgs);
-    executeByteCode(vm, ICONST_1, emptyArgs);
-    executeBC(vm, "IADD", emptyArgs);
-    executeByteCode(vm, PRINT, emptyArgs);
+    executeByteCode(vm, ICONST_2, 0);
+    executeByteCode(vm, ISTORE, 1, "0");
+    executeByteCode(vm, ICONST_3, 0);
+    executeByteCode(vm, ILOAD, 1, "0");
+    executeByteCode(vm, IADD, 0);
+    executeByteCode(vm, ILOAD, 1, "0");
+    executeByteCode(vm, IADD, 0);
+    executeByteCode(vm, ICONST_1, 0);
+    executeByteCode(vm, IADD, 0);
+//    executeBC(vm, "IADD", emptyArgs);
+    executeByteCode(vm, PRINT, 0);
     freeMiniStackVM(&vm);
     return 0;
 }

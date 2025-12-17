@@ -17,7 +17,9 @@ MiniStackVM *createMiniStackVM(size_t elementSize);
 
 void freeMiniStackVM(MiniStackVM **vm);
 
-void executeByteCode(MiniStackVM *vm, unsigned int OpCodeTag, void** args);
+void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, const int count , ...);
+
+inline void executeByteCodeA(MiniStackVM* vm, const unsigned int OpCodeTag, char* args[]);
 
 void executeBC(MiniStackVM *vm, const char *str, void* args[]);
 
