@@ -26,10 +26,9 @@ String* createString(char *str)
 void appendToString(String *string, const char ch)
 {
   if (!string) return;
-  if (string->len > string->capacity)
+  if (string->len + 1 > string->capacity)
   {
     string->capacity = string->capacity * 2;
-    printf("%d\n", string->capacity);
     char* b = realloc(string->value, string->capacity);
     if (!b)
     {
@@ -42,6 +41,20 @@ void appendToString(String *string, const char ch)
   string->len++;
   string->value[string->currentCursor] = ch;
   string->value[string->len] = '\0';
+}
+
+void clearString(String* str)
+{
+  if (!str) return;
+  str->value = NULL;
+  str->value = malloc(str->capacity);
+  if (!str->value) {
+    free(str);
+    return;
+  }
+  strcpy(str->value, "");
+  str->currentCursor = 0;
+  str->len = 0;
 }
 
 void freeString(String **str)

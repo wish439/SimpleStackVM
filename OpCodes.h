@@ -7,6 +7,7 @@
 #define PRINT 0x05
 #define ISTORE 0x06
 #define ILOAD 0x07
+#define ICONST 0x08
 
 #define ICONST_0 101
 #define ICONST_1 102

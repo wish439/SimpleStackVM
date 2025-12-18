@@ -4,6 +4,8 @@
 
 #include "StringReader.h"
 
+#include <stdio.h>
+
 StringReader* createStringReader(String* str)
 {
   StringReader* sr = malloc(sizeof(StringReader));
@@ -26,6 +28,7 @@ String* readToCantRead(StringReader* sr)
     const char c = read(sr);
     appendToString(string, c);
   }
+//  printf("%s\n", string->value);
   return string;
 }
 
@@ -39,8 +42,7 @@ void skipCantRead(StringReader* sr)
 
 int canRead(const StringReader* reader)
 {
-  const String* s = reader->string;
-  const char ch = s->value[reader->cursor];
+  const char ch = peek(reader);
   if (ch == '\0') return 0;
   if (ch == '\r') return 0;
   if (ch == ' ') return 0;

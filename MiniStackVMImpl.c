@@ -41,7 +41,7 @@ void freeMiniStackVM(MiniStackVM** vm)
   *vm = NULL;
 }
 
-void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, const int count , ...)
+void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, const int count, ...)
 {
   char* args[count];
   va_list list;
@@ -51,7 +51,7 @@ void executeByteCode(MiniStackVM* vm, const unsigned int OpCodeTag, const int co
     args[i] = va_arg(list, char*);
   }
   va_end(list);
-  executeByteCodeA(vm, OpCodeTag,count ,args);
+  executeByteCodeA(vm, OpCodeTag, count, args);
 }
 
 int parseInt(const char* __restrict__ Str)
@@ -70,9 +70,8 @@ int parseInt(const char* __restrict__ Str)
   return i;
 }
 
-void executeByteCodeA(MiniStackVM* vm, const unsigned int OpCodeTag,int count, char* args[])
+void executeByteCodeA(MiniStackVM* vm, const unsigned int OpCodeTag, int count, char* args[])
 {
-
   if (!vm)
   {
     return;
@@ -153,8 +152,25 @@ void executeByteCodeA(MiniStackVM* vm, const unsigned int OpCodeTag,int count, c
     int* pushV = getFromStorageStack(vm->stack, tag1);
     pushOperation(vm->opStack, pushV);
     break;
+  case 0x08: //ICONST
+    if (args[0] == NULL)
+    {
+      printf("arg Error!!!");
+      break;
+    }
+    const char* str2 = args[0];
+    int tag2 = parseInt(str2);
+    if (tag2 == -1)
+    {
+      printf("arg Error!!!");
+      break;
+    }
+    int* c = malloc(sizeof(int));
+    *c = tag2;
+    pushOperation(vm->opStack, c);
+    break;
   default:
-    printf("Unknown opcode: %02x\n", OpCodeTag);
+    printf("Unknown opcode: %d\n", OpCodeTag);
     return;
   }
   for (int i = 0; i < count - 1; i++)
@@ -166,6 +182,7 @@ void executeByteCodeA(MiniStackVM* vm, const unsigned int OpCodeTag,int count, c
 void executeBC(MiniStackVM* vm, char* str)
 {
   if (!str) return;
+//  printf("%s\n", str);
   ParseResult* result = parse(createString(str));
   const unsigned int opcode = result->operation;
   char* arg[result->argc];
@@ -179,5 +196,31 @@ void executeBC(MiniStackVM* vm, char* str)
   }
   const int c = result->argc;
   freeParseResult(&result);
-  executeByteCodeA(vm, opcode,c, arg);
+  /*for (int i = 0; i < c; i++)
+  {
+    printf("%s\n", arg[i]);
+  }*/
+  executeByteCodeA(vm, opcode, c, arg);
+}
+
+void executeFile(MiniStackVM* vm, const char* filename)
+{
+  FILE* file = fopen(filename, "r");
+  if (!file) {
+    return;
+  }
+
+  char buffer[256];
+  while (fgets(buffer, sizeof(buffer), file)) {
+    const size_t len = strlen(buffer);
+    if (len > 0 && buffer[len-1] == '\n') {
+      buffer[len-1] = '\0';
+    }
+
+    if (strlen(buffer) > 0) {
+      executeBC(vm, buffer);
+    }
+  }
+
+  fclose(file);
 }

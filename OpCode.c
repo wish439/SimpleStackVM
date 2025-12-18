@@ -22,6 +22,7 @@ struct Instruction instruction_table[] = {
   {"PRINT", PRINT},
   {"ISTORE", ISTORE},
   {"ILOAD", ILOAD},
+  {"ICONST", ICONST},
   {"ICONST_0", ICONST_0},
   {"ICONST_1", ICONST_1},
   {"ICONST_2", ICONST_2},

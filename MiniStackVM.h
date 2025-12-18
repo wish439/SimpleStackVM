@@ -25,4 +25,5 @@ void executeBC(MiniStackVM *vm, char *str);
 
 int parseInt(const char * __restrict__ Str);
 
+void executeFile(MiniStackVM *vm, const char* filename);
 #endif // MINISTACKVM_H
